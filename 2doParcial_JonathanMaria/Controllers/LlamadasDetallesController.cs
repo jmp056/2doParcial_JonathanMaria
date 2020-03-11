@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace _2doParcial_JonathanMaria.Controllers
 {
+
     public class LlamadasDetallesController
     {
         public List<LlamadasDetalles> GetList(Expression<Func<LlamadasDetalles, bool>> expression)
