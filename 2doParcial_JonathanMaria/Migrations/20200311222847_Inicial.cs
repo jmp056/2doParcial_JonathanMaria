@@ -1,4 +1,4 @@
-﻿ion using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace _2doParcial_JonathanMaria.Migrations
 {
