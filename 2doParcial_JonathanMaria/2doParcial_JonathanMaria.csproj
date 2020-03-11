@@ -9,7 +9,6 @@
     <Folder Include="Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Database\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
