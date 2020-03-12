@@ -9,15 +9,17 @@
         <tr>
             <td>Codigo</td>
             <td>Descripcion</td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in ListaLlamadas)
         {
-            <tr>
-                <td>@item.LlamadaId</td>
-                <td>@item.Descripcion</td>
-            </tr>
+        <tr>
+            <td>@item.LlamadaId</td>
+            <td>@item.Descripcion</td>
+            <td><a class="btn btn-sm btn-outline-primary" href="RegistroLlamadas/@item.LlamadaId">Ver</a></td>
+        </tr>
         }
     </tbody>
 </table>

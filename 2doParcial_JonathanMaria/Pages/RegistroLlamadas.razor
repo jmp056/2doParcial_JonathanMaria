@@ -1,75 +1,92 @@
 ﻿@page "/RegistroLlamadas"
+@page "/RegistroLlamadas/{LlamadaId:int}"
 @using _2doParcial_JonathanMaria.Controllers;
 @using _2doParcial_JonathanMaria.Models;
 
-    <EditForm Model="Llamada" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
+<EditForm Model="Llamada" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
 
-        <h1>Registro de llamadas</h1>
+    <h1>Registro de llamadas</h1>
 
-        <div class="form-row">
-            <div class="form-group col-10">
-                <label for="LlamadaId">Codigo de la llamada</label>
-                <div class="form-inline">
-                    <InputNumber @bind-Value="Llamada.LlamadaId" class="form-control" />
-                    <button type="button" class="btn btn-outline-dark text-center" style="margin: 10px" @onclick="Buscar">Buscar</button>
-                </div>
-
+    <div class="form-row">
+        <div class="form-group col-10">
+            <label for="LlamadaId">Codigo de la llamada</label>
+            <div class="form-inline">
+                <InputNumber @bind-Value="Llamada.LlamadaId" class="form-control" />
+                <button type="button" class="btn btn-outline-dark text-center" style="margin: 10px" @onclick="Buscar">Buscar</button>
             </div>
 
         </div>
 
+    </div>
 
-        <div class="form-group">
-            <label for="Descripcion">Descripcion</label>
-            <InputText @bind-Value="Llamada.Descripcion" class="form-control col-11" />
-            <ValidationMessage For="@(() => Llamada.Descripcion)" />
+
+    <div class="form-group">
+        <label for="Descripcion">Descripcion</label>
+        <InputText @bind-Value="Llamada.Descripcion" class="form-control col-11" />
+        <ValidationMessage For="@(() => Llamada.Descripcion)" />
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-5">
+            <label for="Problema">Problema</label>
+            <InputText @bind-Value="LlamadaDetalle.Problema" class="form-control" />
         </div>
-
-        <div class="form-row">
-            <div class="form-group col-5">
-                <label for="Problema">Problema</label>
-                <InputText @bind-Value="LlamadaDetalle.Problema" class="form-control" />
-            </div>
-            <div class="form-group col-6">
-                <label for="Problema">Solucion</label>
-                <div class="form-inline">
-                    <InputText @bind-Value="LlamadaDetalle.Solucion" class="form-control col-9" />
-                    <button type="button" class="btn btn-outline-warning text-center" style="margin: 3px" @onclick="AgregarContenido">Agregar</button>
-                </div>
+        <div class="form-group col-6">
+            <label for="Problema">Solucion</label>
+            <div class="form-inline">
+                <InputText @bind-Value="LlamadaDetalle.Solucion" class="form-control col-9" />
+                <button type="button" class="btn btn-outline-warning text-center" style="margin: 3px" @onclick="AgregarContenido">Agregar</button>
             </div>
         </div>
+    </div>
 
-        <table class="table">
-            <thead>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Problema</th>
+                <th>Solucion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Llamada.Detalle)
+            {
                 <tr>
-                    <th>Codigo</th>
-                    <th>Problema</th>
-                    <th>Solucion</th>
+                    <td>@item.LlamadaDetalleId</td>
+                    <td>@item.Problema</td>
+                    <td>@item.Solucion</td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="rllamadas/@item.LlamadaId">Ver</a></td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Llamada.Detalle)
-                {
-                    <tr>
-                        <td>@item.LlamadaDetalleId</td>
-                        <td>@item.Problema</td>
-                        <td>@item.Solucion</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 
-        <h3>@Mensaje</h3>
+    <h3>@Mensaje</h3>
 
-        <div class="text-center">
-            <button type="button" class="btn btn-outline-primary" @onclick="LimpiarLlamada">Limpiar</button>
-            <button type="submit" class="btn btn-outline-success">Guardar</button>
-            <button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
-        </div>
-    </EditForm>
+    <div class="text-center">
+        <button type="button" class="btn btn-outline-primary" @onclick="LimpiarLlamada">Limpiar</button>
+        <button type="submit" class="btn btn-outline-success">Guardar</button>
+        <button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar</button>
+    </div>
+</EditForm>
 
 @code{
+
+    protected override void OnInitialized()
+	{
+		Llamada = new Llamadas();
+
+		if (LlamadaId!=0)
+		{
+			Llamada.LlamadaId = LlamadaId;
+			Buscar();
+		}
+		
+	}
+
+	[Parameter]
+	public int LlamadaId { get; set; }
     Llamadas Llamada = new Llamadas();
     LlamadasDetalles LlamadaDetalle = new LlamadasDetalles();
     string Mensaje = string.Empty;
@@ -82,7 +99,7 @@
 
         if (Llamada.LlamadaId == 0 || LlamadaTemporal != null)
         {
-            if(Llamada.Detalle.Count > 0)
+            if (Llamada.Detalle.Count > 0)
             {
                 if (llamadasController.Guardar(Llamada))
                 {
@@ -131,24 +148,24 @@
     }
 
     public void Eliminar()
-	{
+    {
         LlamadasController llamadasController = new LlamadasController();
-        Llamadas LlamadaTemporal = new Llamadas(); 
+        Llamadas LlamadaTemporal = new Llamadas();
 
-		LlamadaTemporal = llamadasController.Buscar(Llamada.LlamadaId);
+        LlamadaTemporal = llamadasController.Buscar(Llamada.LlamadaId);
 
-		if (LlamadaTemporal != null)
-		{
-			llamadasController.Eliminar(LlamadaTemporal.LlamadaId);
-			LimpiarLlamada();
-			Mensaje = "Llamada Eliminada de manera exitosa!";
-		}
-		else
-		{
-			LimpiarLlamada();
-			Mensaje = "La llamada no pudo ser eliminada!";
-		}
-	}
+        if (LlamadaTemporal != null)
+        {
+            llamadasController.Eliminar(LlamadaTemporal.LlamadaId);
+            LimpiarLlamada();
+            Mensaje = "Llamada Eliminada de manera exitosa!";
+        }
+        else
+        {
+            LimpiarLlamada();
+            Mensaje = "La llamada no pudo ser eliminada!";
+        }
+    }
 
     public void AgregarContenido()
     {
@@ -171,7 +188,7 @@
                 Solucion = LlamadaDetalle.Solucion
 
             });
-            
+
             LimpiarDetalle();
         }
 
@@ -188,7 +205,7 @@
     private void LimpiarDetalle()
     {
         LlamadaDetalle = new LlamadasDetalles();
-         Mensaje = string.Empty;
+        Mensaje = string.Empty;
     }
 
 }
