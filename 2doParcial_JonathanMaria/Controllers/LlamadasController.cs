@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace _2doParcial_JonathanMaria.Controllers
@@ -142,6 +143,22 @@ namespace _2doParcial_JonathanMaria.Controllers
             }
 
             return Paso;
+        }
+
+        public List<Llamadas> GetList(Expression<Func<Llamadas, bool>> expression)
+        {
+            Contexto contexto = new Contexto();
+            List<Llamadas> ListaLlamadas;
+
+            try
+            {
+                ListaLlamadas = contexto.Llamadas.Where(expression).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return ListaLlamadas;
         }
     }
 }

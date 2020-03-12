@@ -1,5 +1,39 @@
 ﻿@page "/ConsultaLlamadas"
+@using _2doParcial_JonathanMaria.Controllers;
+@using _2doParcial_JonathanMaria.Models;
 
-<h1>Hello, world!</h1>
+<h3>Consulta de Llamadas</h3>
 
-Welcome to your new app.
+<table class="table">
+    <thead>
+        <tr>
+            <td>Codigo</td>
+            <td>Descripcion</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ListaLlamadas)
+        {
+            <tr>
+                <td>@item.LlamadaId</td>
+                <td>@item.Descripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+
+    LlamadasController llamadasController = new LlamadasController();
+
+    List<Llamadas> ListaLlamadas;
+    protected override void OnInitialized()
+    {
+        ListaLlamadas = llamadasController.GetList(e => true);
+    }
+
+
+
+}
