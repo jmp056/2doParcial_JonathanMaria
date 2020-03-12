@@ -9,8 +9,8 @@ using _2doParcial_JonathanMaria.Data;
 namespace _2doParcial_JonathanMaria.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200311222847_Inicial")]
-    partial class Inicial
+    [Migration("20200312001809_Actualizando")]
+    partial class Actualizando
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,6 +25,7 @@ namespace _2doParcial_JonathanMaria.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("LlamadaId");
@@ -36,6 +37,9 @@ namespace _2doParcial_JonathanMaria.Migrations
                 {
                     b.Property<int>("LlamadaDetalleId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LlamadaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("LlamadasLlamadaId")

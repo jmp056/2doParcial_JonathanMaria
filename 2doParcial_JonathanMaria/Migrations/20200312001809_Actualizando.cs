@@ -2,7 +2,7 @@
 
 namespace _2doParcial_JonathanMaria.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class Actualizando : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace _2doParcial_JonathanMaria.Migrations
                 {
                     LlamadaId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Descripcion = table.Column<string>(nullable: true)
+                    Descripcion = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,6 +25,7 @@ namespace _2doParcial_JonathanMaria.Migrations
                 {
                     LlamadaDetalleId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    LlamadaId = table.Column<int>(nullable: false),
                     Problema = table.Column<string>(nullable: true),
                     Solucion = table.Column<string>(nullable: true),
                     LlamadasLlamadaId = table.Column<int>(nullable: true)

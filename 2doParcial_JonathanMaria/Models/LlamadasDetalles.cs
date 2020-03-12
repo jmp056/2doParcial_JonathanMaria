@@ -10,12 +10,14 @@ namespace _2doParcial_JonathanMaria.Models
     {
         [Key]
         public int LlamadaDetalleId { get; set; }
+        public int LlamadaId { get; set; }
         public string Problema { get; set; }
         public string Solucion { get; set; }
 
         public LlamadasDetalles()
         {
             LlamadaDetalleId = 0;
+            LlamadaId = 0;
             Problema = string.Empty;
             Solucion = string.Empty;
         }

@@ -10,6 +10,7 @@ namespace _2doParcial_JonathanMaria.Models
     {
         [Key]
         public int LlamadaId { get; set; }
+        [Required(ErrorMessage ="La llamada debe tener una descripcion!")]
         public string Descripcion { get; set; }
         public List<LlamadasDetalles> Detalle { get; set; }
 

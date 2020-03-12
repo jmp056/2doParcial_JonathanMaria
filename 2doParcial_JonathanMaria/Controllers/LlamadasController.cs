@@ -14,24 +14,24 @@ namespace _2doParcial_JonathanMaria.Controllers
         {
             bool Paso = false;
 
-            try
+            //try
+            //{
+            if (Llamada.LlamadaId == 0)
             {
-                if(Llamada.LlamadaId == 0)
-                {
-                    Paso = Guardar(Llamada);
-
-                }
-                else
-                {
-                    Paso = Modificar(Llamada);
-
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                Paso = Insertar(Llamada);
 
             }
+            else
+            {
+                Paso = Modificar(Llamada);
+
+            }
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+
+            //}
 
             return Paso;
         }
@@ -39,6 +39,7 @@ namespace _2doParcial_JonathanMaria.Controllers
         {
             bool Paso = false;
             Contexto contexto = new Contexto();
+
             try
             {
                 contexto.Llamadas.Add(Llamada);
@@ -66,27 +67,14 @@ namespace _2doParcial_JonathanMaria.Controllers
 
             try
             {
-                Llamadas LlamadaAnterior = contexto.Llamadas.Find(Llamada.LlamadaId);
-                foreach (var item in LlamadaAnterior.Detalle)
+                contexto.Database.ExecuteSqlRaw($"Delete From LlamadasDetalles where LlamadaId={Llamada.LlamadaId}");
+
+                foreach (var item in Llamada.Detalle)
                 {
-
-                    if (item.LlamadaDetalleId == 0)
-                    {
-                        contexto.Entry(item).State = EntityState.Added;
-
-                    }
-                    else if (!Llamada.Detalle.Any(d => d.LlamadaDetalleId == item.LlamadaDetalleId))
-                    {
-                        contexto.Entry(item).State = EntityState.Deleted;
-                    
-                    }
-                    else
-                    {
-
-                        contexto.Entry(item).State = EntityState.Modified;
-                    }
+                    contexto.Entry(item).State = EntityState.Added;
                 }
 
+                contexto.Llamadas.Add(Llamada);
                 contexto.Entry(Llamada).State = EntityState.Modified;
                 Paso = contexto.SaveChanges() > 0;
 
@@ -112,10 +100,10 @@ namespace _2doParcial_JonathanMaria.Controllers
 
             try
             {
-                Llamada = contexto.Llamadas.Find(Id);
+                Llamada = contexto.Llamadas.Where(e => e.LlamadaId == Id).Include(d => d.Detalle).FirstOrDefault();
 
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
 
@@ -127,6 +115,33 @@ namespace _2doParcial_JonathanMaria.Controllers
             }
 
             return Llamada;
+        }
+
+        public bool Eliminar(int Id)
+        {
+            Contexto contexto = new Contexto();
+            Llamadas Llamada = new Llamadas();
+            bool Paso = false;
+
+            try
+            {
+                Llamada = contexto.Llamadas.Find(Id);
+                contexto.Entry(Llamada).State = EntityState.Deleted;
+                Paso = contexto.SaveChanges() > 0;
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+            finally
+            {
+                contexto.Dispose();
+
+            }
+
+            return Paso;
         }
     }
 }

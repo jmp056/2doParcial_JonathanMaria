@@ -23,6 +23,7 @@ namespace _2doParcial_JonathanMaria.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("LlamadaId");
@@ -34,6 +35,9 @@ namespace _2doParcial_JonathanMaria.Migrations
                 {
                     b.Property<int>("LlamadaDetalleId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LlamadaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("LlamadasLlamadaId")
